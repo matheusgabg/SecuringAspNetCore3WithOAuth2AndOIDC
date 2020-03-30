@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Quickstart\AdditionalResources.cs" />
+  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="IdentityServer4" Version="3.1.0" />
