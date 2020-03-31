@@ -32,7 +32,21 @@ namespace ImageGallery.Client
             services.AddControllersWithViews()
                  .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
 
+            services.AddAuthorization(authorizationOptions => 
+            {
+                authorizationOptions.AddPolicy(
+                    "CanOrderFrame",
+                    policyBuilder =>
+                    {
+                        policyBuilder.RequireAuthenticatedUser();
+                        policyBuilder.RequireClaim("country", "be");
+                        policyBuilder.RequireClaim("subscriptionlevel", "PayingUser");
+                    }
+                    );
+            });
+
             services.AddHttpContextAccessor();//used for custom BearerTokenHandler class
+
             services.AddTransient<BearerTokenHandler>();//short-lived service, transient applies
 
             // create an HttpClient used for accessing the API
@@ -71,6 +85,8 @@ namespace ImageGallery.Client
                     options.Scope.Add("address");//adding address claim to scope
                     options.Scope.Add("roles");
                     options.Scope.Add("imagegalleryapi");
+                    options.Scope.Add("country");
+                    options.Scope.Add("subscriptionlevel");
 
                     options.SaveTokens = true;//middleware will save tokens received
                     //options.ClaimActions.Remove("nbf");//this removes THE FILTER that gets rid of the claim. Calling .Remove actually includes the claim 
@@ -79,6 +95,8 @@ namespace ImageGallery.Client
                     options.ClaimActions.DeleteClaim("s_hash");
                     options.ClaimActions.DeleteClaim("auth_time");
                     options.ClaimActions.MapUniqueJsonKey("role", "role");
+                    options.ClaimActions.MapUniqueJsonKey("subscriptionlevel", "subscriptionlevel");
+                    options.ClaimActions.MapUniqueJsonKey("country", "country");
                     options.ClientSecret = "secret";//secret to match IDP
                     options.GetClaimsFromUserInfoEndpoint = true;
                     options.TokenValidationParameters = new TokenValidationParameters

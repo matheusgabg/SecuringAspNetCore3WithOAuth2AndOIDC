@@ -21,6 +21,16 @@ namespace IdentityServer.IDP
                     "roles",
                     "Your role(s)",
                     new List<string>(){ "role" }
+                    ),
+                new IdentityResource(
+                    "country",
+                    "The country you're living in",
+                    new List<string>(){ "country" }
+                    ),
+                new IdentityResource(
+                    "subscriptionlevel",
+                    "Your subscription Level",
+                    new List<string>(){ "subscriptionlevel" }
                     )
             };
 
@@ -57,7 +67,9 @@ namespace IdentityServer.IDP
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Address,
                         "roles",
-                        "imagegalleryapi"
+                        "imagegalleryapi",
+                        "country",
+                        "subscriptionlevel"
                     },
                     ClientSecrets =
                     {
