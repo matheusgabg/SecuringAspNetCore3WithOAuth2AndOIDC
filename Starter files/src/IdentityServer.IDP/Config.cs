@@ -42,6 +42,9 @@ namespace IdentityServer.IDP
                     "imagegalleryapi",
                     "Image Gallery API",
                     new List<string>(){ "role" } )
+                {
+                    ApiSecrets = { new Secret("apisecret".Sha256()) }
+                }
             };
 
         public static IEnumerable<Client> Clients =>
@@ -49,6 +52,7 @@ namespace IdentityServer.IDP
             {
                 new Client
                 {
+                    AccessTokenType = AccessTokenType.Reference,
                     AccessTokenLifetime = 120,
                     AllowOfflineAccess = true,
                     UpdateAccessTokenClaimsOnRefresh = true,
