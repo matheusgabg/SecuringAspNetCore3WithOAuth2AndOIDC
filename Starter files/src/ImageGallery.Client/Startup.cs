@@ -87,6 +87,7 @@ namespace ImageGallery.Client
                     options.Scope.Add("imagegalleryapi");
                     options.Scope.Add("country");
                     options.Scope.Add("subscriptionlevel");
+                    options.Scope.Add("offline_access");
 
                     options.SaveTokens = true;//middleware will save tokens received
                     //options.ClaimActions.Remove("nbf");//this removes THE FILTER that gets rid of the claim. Calling .Remove actually includes the claim 
