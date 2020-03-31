@@ -1,4 +1,5 @@
 ﻿using IdentityModel;
+using ImageGallery.Client.HttpHandlers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -31,13 +32,16 @@ namespace ImageGallery.Client
             services.AddControllersWithViews()
                  .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
 
+            services.AddHttpContextAccessor();//used for custom BearerTokenHandler class
+            services.AddTransient<BearerTokenHandler>();//short-lived service, transient applies
+
             // create an HttpClient used for accessing the API
             services.AddHttpClient("APIClient", client =>
             {
                 client.BaseAddress = new Uri("https://localhost:44366/");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-            });
+            }).AddHttpMessageHandler<BearerTokenHandler>();
 
             services.AddHttpClient("IDPClient", client =>
             {
@@ -66,6 +70,8 @@ namespace ImageGallery.Client
 
                     options.Scope.Add("address");//adding address claim to scope
                     options.Scope.Add("roles");
+                    options.Scope.Add("imagegalleryapi");
+
                     options.SaveTokens = true;//middleware will save tokens received
                     //options.ClaimActions.Remove("nbf");//this removes THE FILTER that gets rid of the claim. Calling .Remove actually includes the claim 
                     options.ClaimActions.DeleteClaim("sid");//this actually deletes the claim

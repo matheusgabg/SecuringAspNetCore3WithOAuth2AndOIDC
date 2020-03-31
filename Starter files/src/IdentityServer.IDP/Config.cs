@@ -13,7 +13,7 @@ namespace IdentityServer.IDP
         //Identity resources map to scopes that give access to identity related information.
         public static IEnumerable<IdentityResource> Ids =>
             new IdentityResource[]
-            { 
+            {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Address(),
@@ -26,11 +26,16 @@ namespace IdentityServer.IDP
 
         //API resources map to scopes that give access to API's
         public static IEnumerable<ApiResource> Apis =>
-            new ApiResource[] 
-            { };
-        
+            new ApiResource[]
+            {
+                new ApiResource(
+                    "imagegalleryapi",
+                    "Image Gallery API",
+                    new List<string>(){ "role" } )
+            };
+
         public static IEnumerable<Client> Clients =>
-            new Client[] 
+            new Client[]
             {
                 new Client
                 {
@@ -51,7 +56,8 @@ namespace IdentityServer.IDP
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Address,
-                        "roles"
+                        "roles",
+                        "imagegalleryapi"
                     },
                     ClientSecrets =
                     {
@@ -59,6 +65,6 @@ namespace IdentityServer.IDP
                     }
                 }
             };
-        
+
     }
 }
