@@ -41,9 +41,9 @@ namespace IdentityServer.IDP
                 .AddTestUsers(TestUsers.Users);
 
             // not recommended for production - you need to store your key material somewhere secure
-            //builder.AddDeveloperSigningCredential();
+            builder.AddDeveloperSigningCredential();
 
-            builder.AddSigningCredential(LoadCertificateFromStore());
+            //builder.AddSigningCredential(LoadCertificateFromStore());
 
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
@@ -86,9 +86,10 @@ namespace IdentityServer.IDP
             });
         }
 
+        //create certificate before using this
         public X509Certificate2 LoadCertificateFromStore()
         {
-            string thumbPrint = "6165e171fef26517ccfed497c85e1658c994a516";
+            string thumbPrint = "b4ed5ce67e7adebd27b197e11eee68fa75864a1a";
 
             using (var store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
             {
